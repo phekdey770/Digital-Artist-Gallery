@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Artist Gallery</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Moul&family=Moulpali&family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2452/2452499.png">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --accent-color: #fd79a8;
+            --header-font: 'Moul', serif;
+            --model-font: 'Moulpali', serif;
+            --body-font: 'Kantumruy Pro', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-family: var(--header-font);
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #ffffff, #a29bfe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 5%;
+            margin-top: 70px;
+        }
+
+        .hero-content h2 {
+            font-family: var(--header-font);
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(253, 121, 168, 0.4);
+            width: fit-content;
+            margin: auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(253, 121, 168, 0.6);
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--dark-color);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 1.5rem;
+            color: white;
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-info {
+            transform: translateY(0);
+        }
+
+        .gallery-item-info h3 {
+            font-family: var(--model-font);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-item-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .about-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: all 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-content {
+            flex: 1;
+        }
+
+        .about-content h2 {
+            font-family: var(--header-font);
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            font-family: var(--model-font);
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .contact-details {
+            margin-top: 2rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-detail i {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        .contact-form {
+            flex: 1;
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: var(--body-font);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 50px;
+            padding: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-toggle label {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .language-toggle input[type="checkbox"] {
+            display: none;
+        }
+
+        .language-toggle input[type="checkbox"]:checked + .toggle-slider {
+            transform: translateX(100%);
+        }
+
+        .language-toggle input[type="checkbox"]:checked ~ .en-label {
+            color: #999;
+        }
+
+        .language-toggle input[type="checkbox"]:not(:checked) ~ .km-label {
+            color: #999;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            z-index: -1;
+            left: 0;
+        }
+
+        .km-label, .en-label {
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about, .contact-container {
+                flex-direction: column;
+            }
+
+            .about-image, .about-content, .contact-info, .contact-form {
+                flex: none;
+                width: 100%;
+            }
+
+            .hero-content h2 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--primary-color);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                transition: all 0.5s ease;
+            }
+
+            nav ul.active {
+                left: 0;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-content h2 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-toggle {
+                bottom: 70px;
+            }
+        }
+
+        /* Animation Styles */
+        [data-aos="fade-up"] {
+            opacity: 0;
+            transform: translateY(30px);
+            transition-property: transform, opacity;
+        }
+
+        [data-aos="fade-up"].aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        [data-aos="fade-left"] {
+            opacity: 0;
+            transform: translateX(30px);
+            transition-property: transform, opacity;
+        }
+
+        [data-aos="fade-left"].aos-animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        [data-aos="fade-right"] {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition-property: transform, opacity;
+        }
+
+        [data-aos="fade-right"].aos-animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        [data-aos="zoom-in"] {
+            opacity: 0;
+            transform: scale(0.8);
+            transition-property: transform, opacity;
+        }
+
+        [data-aos="zoom-in"].aos-animate {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/2452/2452499.png" alt="Digital Art Logo">
+            <h1>Digital Art Gallery</h1>
+        </div>
+        <nav>
+            <ul id="nav-menu">
+                <li><a href="#home" class="nav-link en">Home</a></li>
+                <li><a href="#home" class="nav-link km" style="display: none;">ទំព័រដើម</a></li>
+                <li><a href="#gallery" class="nav-link en">Gallery</a></li>
+                <li><a href="#gallery" class="nav-link km" style="display: none;">វិចិត្រសាល</a></li>
+                <li><a href="#about" class="nav-link en">About</a></li>
+                <li><a href="#about" class="nav-link km" style="display: none;">អំពីយើង</a></li>
+                <li><a href="#contact" class="nav-link en">Contact</a></li>
+                <li><a href="#contact" class="nav-link km" style="display: none;">ទំនាក់ទំនង</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content" data-aos="zoom-in" data-aos-duration="1000">
+            <h2 class="en">Welcome to Digital Art World</h2>
+            <h2 class="km" style="display: none;">សូមស្វាគមន៍មកកាន់ពិភពសិល្បៈឌីជីថល</h2>
+            <p class="en">Discover stunning digital artworks from talented artists around the world. Our gallery showcases the best in contemporary digital art.</p>
+            <p class="km" style="display: none;">ស្វែងរកសិល្បៈឌីជីថលដ៏អស្ចារ្យពីសិល្បករមានប្រាជ្ញាជុំវិញពិភពលោក។ វិចិត្រសាលរបស់យើងបង្ហាញពីសិល្បៈឌីជីថលសម័យទំនើបល្អបំផុត។</p>
+            <a href="#gallery" class="btn en">Explore Gallery</a>
+            <a href="#gallery" class="btn km" style="display: none;">ស្វែងរកវិចិត្រសាល</a>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <div class="section-title" data-aos="fade-up">
+            <h2 class="en">Featured Artworks</h2>
+            <h2 class="km" style="display: none;">សិល្បៈដែលបានដាក់ជាលក្ខណៈពិសេស</h2>
+            <p class="en">Explore our collection of stunning digital artworks from talented artists worldwide.</p>
+            <p class="km" style="display: none;">ស្វែងរកការប្រមូលផ្តុំសិល្បៈឌីជីថលដ៏អស្ចារ្យរបស់យើងពីសិល្បករមានប្រាជ្ញាពីទូទាំងពិភពលោក។</p>
+        </div>
+        <div class="gallery-grid">
+            <!-- Artwork 1 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80" alt="Digital Art 1">
+                <div class="gallery-item-info">
+                    <h3 class="en">Cosmic Dreams</h3>
+                    <h3 class="km" style="display: none;">សុបិន្តចក្រវាឡ</h3>
+                    <p class="en">By Sarah Johnson</p>
+                    <p class="km" style="display: none;">ដោយ Sarah Johnson</p>
+                </div>
+            </div>
+            
+            <!-- Artwork 2 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Digital Art 2">
+                <div class="gallery-item-info">
+                    <h3 class="en">Neon Cityscape</h3>
+                    <h3 class="km" style="display: none;">ទេសភាពទីក្រុងពន្លឺណេអុន</h3>
+                    <p class="en">By Michael Chen</p>
+                    <p class="km" style="display: none;">ដោយ Michael Chen</p>
+                </div>
+            </div>
+            
+            <!-- Artwork 3 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Digital Art 3">
+                <div class="gallery-item-info">
+                    <h3 class="en">Mountain Serenity</h3>
+                    <h3 class="km" style="display: none;">ភាពស្ងប់ស្ងាត់នៅភ្នំ</h3>
+                    <p class="en">By Elena Rodriguez</p>
+                    <p class="km" style="display: none;">ដោយ Elena Rodriguez</p>
+                </div>
+            </div>
+            
+            <!-- Artwork 4 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Digital Art 4">
+                <div class="gallery-item-info">
+                    <h3 class="en">Ocean Wonders</h3>
+                    <h3 class="km" style="display: none;">អាថ៌កំបាំងនៃមហាសមុទ្រ</h3>
+                    <p class="en">By David Kim</p>
+                    <p class="km" style="display: none;">ដោយ David Kim</p>
+                </div>
+            </div>
+            
+            <!-- Artwork 5 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+                <img src="https://images.unsplash.com/photo-1505142468610-359e7d316be0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Digital Art 5">
+                <div class="gallery-item-info">
+                    <h3 class="en">Abstract Harmony</h3>
+                    <h3 class="km" style="display: none;">ភាពស្របគ្នាអរូបី</h3>
+                    <p class="en">By James Wilson</p>
+                    <p class="km" style="display: none;">ដោយ James Wilson</p>
+                </div>
+            </div>
+            
+            <!-- Artwork 6 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+                <img src="https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Digital Art 6">
+                <div class="gallery-item-info">
+                    <h3 class="en">Forest Whispers</h3>
+                    <h3 class="km" style="display: none;">សម្លេងខ្សឹបព្រៃ</h3>
+                    <p class="en">By Sophia Martinez</p>
+                    <p class="km" style="display: none;">ដោយ Sophia Martinez</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image" data-aos="fade-right">
+            <img src="https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Digital Artist at Work">
+        </div>
+        <div class="about-content" data-aos="fade-left">
+            <h2 class="en">About Our Gallery</h2>
+            <h2 class="km" style="display: none;">អំពីវិចិត្រសាលរបស់យើង</h2>
+            <p class="en">Founded in 2020, our digital art gallery is dedicated to showcasing the most innovative and inspiring digital artworks from emerging and established artists worldwide. We believe in the power of digital art to transform perspectives and inspire creativity.</p>
+            <p class="km" style="display: none;">បង្កើតឡើងនៅឆ្នាំ២០២០ វិចិត្រសាលសិល្បៈឌីជីថលរបស់យើងបានឧទ្ទិសដល់ការបង្ហាញសិល្បៈឌីជីថលដ៏ប្រឌិត និងជាប្រភពនៃការបំផុសគំនិតបំផុតពីសិល្បករដែលកំពុងរីកចម្រើន និងដែលបានបង្កើតឈ្មោះជុំវិញពិភពលោក។ យើងជឿជាក់លើអានុភាពនៃសិល្បៈឌីជីថលក្នុងការផ្លាស់ប្តូរទស្សនៈ និងបំផុសគំនិតច្នៃប្រឌិត។</p>
+            <p class="en">Our mission is to create a platform where digital artists can share their work with a global audience and art enthusiasts can discover new talents and perspectives.</p>
+            <p class="km" style="display: none;">បេសកកម្មរបស់យើងគឺបង្កើតវេទិកាដែលសិល្បករឌីជីថលអាចចែករំលែកការងាររបស់ពួកគេជាមួយប្រិយមិត្តជុំវិញពិភពលោក ហើយអ្នកគាំទ្រសិល្បៈអាចរកឃើញសមត្ថភាព និងទស្សនៈថ្មីៗ។</p>
+            <a href="#contact" class="btn en">Get In Touch</a>
+            <a href="#contact" class="btn km" style="display: none;">ទាក់ទងមកយើងខ្ញុំ</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-title" data-aos="fade-up">
+            <h2 class="en">Contact Us</h2>
+            <h2 class="km" style="display: none;">ទាក់ទងមកយើងខ្ញុំ</h2>
+            <p class="en">Have questions or want to showcase your work? Reach out to us!</p>
+            <p class="km" style="display: none;">មានសំណួរ ឬចង់បង្ហាញការងាររបស់អ្នក? សូមទាក់ទងមកយើងខ្ញុំ!</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info" data-aos="fade-right">
+                <h3 class="en">Get in Touch</h3>
+                <h3 class="km" style="display: none;">ទាក់ទងមកយើងខ្ញុំ</h3>
+                <p class="en">We'd love to hear from you! Whether you're an artist looking to showcase your work or an art enthusiast with questions, feel free to reach out.</p>
+                <p class="km" style="display: none;">យើងពិតជារីករាយក្នុងការទទួលដំណឹងពីអ្នក! មិនថាអ្នកជាសិល្បករដែលចង់បង្ហាញការងាររបស់អ្នក ឬអ្នកគាំទ្រសិល្បៈដែលមានសំណួរ សូមមានភាពស្មោះត្រង់ក្នុងការទាក់ទងមកយើងខ្ញុំ។</p>
+                <div class="contact-details">
+                    <div class="contact-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="en">123 Art Street, Phnom Penh, Cambodia</span>
+                        <span class="km" style="display: none;">១២៣ ផ្លូវសិល្បៈ ភ្នំពេញ កម្ពុជា</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-phone"></i>
+                        <span>+855 12 345 678</span>
+                    </div>
+                    <div class="contact-detail">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@digitalartgallery.com</span>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form" data-aos="fade-left">
+                <form>
+                    <div class="form-group">
+                        <label for="name" class="en">Name</label>
+                        <label for="name" class="km" style="display: none;">ឈ្មោះ</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="en">Email</label>
+                        <label for="email" class="km" style="display: none;">អ៊ីមែល</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject" class="en">Subject</label>
+                        <label for="subject" class="km" style="display: none;">ប្រធានបទ</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="en">Message</label>
+                        <label for="message" class="km" style="display: none;">សារ</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn en">Send Message</button>
+                    <button type="submit" class="btn km" style="display: none;">ផ្ញើសារ</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <img src="https://cdn-icons-png.flaticon.com/512/2452/2452499.png" alt="Digital Art Logo">
+                <h1>Digital Art Gallery</h1>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+            <p class="copyright en">2025 - All rights reserved. Provide by Mr. Phekdey PHORN</p>
+            <p class="copyright km" style="display: none;">2025 - រក្សារ​សិទ្ធិ​គ្រប់​យ៉ាង ដោយលោក ផន ភក្ដី។</p>
+        </div>
+    </footer>
+
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <input type="checkbox" id="language-toggle">
+        <span class="toggle-slider"></span>
+        <label for="language-toggle" class="km-label">ភាសាខ្មែរ</label>
+        <label for="language-toggle" class="en-label">English</label>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS animation
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: false
+        });
+
+        // Mobile menu toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.innerHTML = navMenu.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Back to top button
+        const backToTopButton = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('active');
+            } else {
+                backToTopButton.classList.remove('active');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Language toggle functionality
+        const languageToggle = document.getElementById('language-toggle');
+        const englishElements = document.querySelectorAll('.en');
+        const khmerElements = document.querySelectorAll('.km');
+
+        languageToggle.addEventListener('change', () => {
+            if (languageToggle.checked) {
+                // Switch to Khmer
+                englishElements.forEach(el => el.style.display = 'none');
+                khmerElements.forEach(el => el.style.display = 'block');
+            } else {
+                // Switch to English
+                englishElements.forEach(el => el.style.display = 'block');
+                khmerElements.forEach(el => el.style.display = 'none');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
